@@ -1,0 +1,237 @@
+
+import React, {Component} from 'react';
+import { StyleSheet, Text, View, ScrollView, Animated, Image, ImageBackground, Dimensions, SafeAreaView} from 'react-native';
+import { Header, Left, Right,Body} from 'native-base'
+import Category from './components/Category'
+const {height, width} = Dimensions.get('window')
+
+HEADER_MAX_HEIGHT = 120
+HEADER_MIN_HEIGHT = 80
+PROFILE_IMAGE_MAX_HEIGHT = 80
+PROFILE_IMAGE_MIN_HEIGHT = 0
+
+export default class App extends Component<Props> {
+  constructor(props){
+    super(props)
+    this.state = {
+      scrollY: new Animated.Value(0)
+    }
+  }
+
+  render() {
+    const headerHeight = this.state.scrollY.interpolate({
+      inputRange: [0,HEADER_MAX_HEIGHT-HEADER_MIN_HEIGHT],
+      outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+      extrapolate:'clamp'
+      })
+
+      const mainBarHeight = this.state.scrollY.interpolate({
+        inputRange: [0,HEADER_MAX_HEIGHT-HEADER_MIN_HEIGHT],
+        outputRange: [PROFILE_IMAGE_MAX_HEIGHT, PROFILE_IMAGE_MIN_HEIGHT],
+        extrapolate:'clamp'
+        })
+
+        const mainBarMarginTop = this.state.scrollY.interpolate({
+          inputRange: [0,HEADER_MAX_HEIGHT-HEADER_MIN_HEIGHT],
+          outputRange: [HEADER_MAX_HEIGHT-(PROFILE_IMAGE_MAX_HEIGHT), HEADER_MAX_HEIGHT],
+          extrapolate:'clamp'
+          })
+
+          return (
+          <SafeAreaView style={{flex:1}}>
+            <View style={{flex:1}}>
+            <Animated.View style={{
+              position:'absolute',
+              top:0,
+              left:0,
+              right:0,
+              backgroundColor: 'gray',
+              height: headerHeight,
+              }}>
+
+              </Animated.View>
+
+              <ScrollView style={{flex:1}}
+              scrollEventThrottle={16}
+              onScroll={Animated.event(
+                [{nativeEvent:{contentOffset: {y: this.state.scrollY}}}]
+                )}>
+
+                <ImageBackground
+                style={{width:375, height:400}}
+                source={require('./assets/food.jpg')}>
+
+
+                <Animated.View style={{height:mainBarHeight,
+                  overflow: 'hidden',
+                  backgroundColor:'gray',
+                  marginTop: mainBarMarginTop,
+                  justifyContent:'center',
+                  alignItems:'center',
+                  flexDirection:'row',
+                  opacity:0.6
+                  }}>
+
+                  <Left>
+                  <Image source={require('./assets/drawable-hdpi/ic_menu.png')}></Image>
+                  </Left>
+
+                  <Image source={require('./assets/drawable-hdpi/assets_title_symbol_white.png')}></Image>
+                  <Body>
+                  <Image source={require('./assets/drawable-hdpi/ic_favorites.png')}></Image>
+                  </Body>
+
+                  <Right>
+                  <Image source={require('./assets/drawable-hdpi/ic_search.png')}></Image>
+                  </Right>
+                  </Animated.View>
+
+
+                  <View style={{padding:10,height:40,backgroundColor:'gray',borderColor: 'transparent',justifyContent:'center',opacity:0.6,
+                  alignItems:'center',
+                  flexDirection:'row',justifyContent:'space-between'}}>
+                  <Text style={{color:'white'}}>홈</Text>
+                  <Text style={{color:'white'}}>종류별</Text>
+                  <Text style={{color:'white'}}>상황별</Text>
+                  <Text style={{color:'white'}}>조리별</Text>
+                  </View>
+                  </ImageBackground>
+
+
+
+                  <View style={{flex:1,backgroundColor:'blue', marginTop:15}}>
+                  <Text style={{fontSize: 24, fontWeight:'700', paddingHorizontal: 20}}>#겨울별미</Text>
+                  <ScrollView horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  <Category imageUri={require('./assets/chicken.jpg')}
+                  name='삼계탕'
+                  height={150}
+                  width={100}/>
+
+                  <Category imageUri={require('./assets/dumpling.jpg')}
+                  name='삼계탕'
+                  height={150}
+                  width={100}/>
+
+                  <Category imageUri={require('./assets/soup.jpg')}
+                  name='삼계탕'
+                  height={150}
+                  width={100}/>
+
+                  <Category imageUri={require('./assets/riceNuddle.jpg')}
+                  name='삼계탕'
+                  height={150}
+                  width={100}/>
+
+                  <Category imageUri={require('./assets/chicken.jpg')}
+                  name='삼계탕'
+                  height={150}
+                  width={100}/>
+                  </ScrollView>
+                  </View>
+
+
+                  <View style={{flex:1,backgroundColor:'green', marginTop:15}}>
+                  <Text style={{fontSize: 24, fontWeight:'700', paddingHorizontal: 20}}>블룸님을 위한 추천 레시피</Text>
+                  <View style={{marginTop:0, paddingHorizontal:20, backgroundColor:'white'}}>
+                  <ScrollView horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  <View style={{flexDirection:'row',}}>
+                  <ImageBackground
+                  style={{ justifyContent:'flex-end',flex:1, height:180, width:280, resizeMode:'cover', borderRadius:5, borderWidth:1,borderColor:'#dddddd', margin:10}} source={require('./assets/steak.jpg')}>
+                  <Text style={{fontSize:18,paddingLeft:10,color:'white', fontWeight:'bold',paddingBottom:0}}>스테미너에는 스테이크</Text>
+                  <Text style={{paddingLeft:10,fontSize:14,color:'white', fontWeight:'bold',paddingBottom:20}}>19개의 레시피 보기</Text>
+                  </ImageBackground>
+                  <ImageBackground
+                  style={{ justifyContent:'flex-end',flex:1, height:180, width:330, resizeMode:'cover', borderRadius:5, borderWidth:1,borderColor:'#dddddd',margin:10}} source={require('./assets/pizza.jpg')}>
+                  <Text style={{fontSize:18,paddingLeft:10,color:'white', fontWeight:'bold',paddingBottom:0}}>피자는 페페로니지!</Text>
+                  <Text style={{paddingLeft:10,fontSize:14,color:'white', fontWeight:'bold',paddingBottom:20}}>19개의 레시피 보기</Text>
+                  </ImageBackground>
+                  </View>
+                  </ScrollView>
+                  </View>
+                  </View>
+
+
+                  <View style={{width:'100%', height:320, backgroundColor:'yellow',paddingTop:40, paddingLeft:20, paddingRight:20}}>
+                  <ImageBackground
+                  style={{ justifyContent:'center', alignItems:'center',flex:1, height:null, width:null, resizeMode:'cover', borderRadius:5, borderWidth:1,borderColor:'#dddddd'}} source={require('./assets/dessert.jpg')}>
+                  <Text style={{fontSize:18,paddingLeft:10,color:'white', fontWeight:'bold'}}>무한한 상큼함! 무화과 요거트</Text>
+                  <Text style={{paddingLeft:10,fontSize:14,color:'white', fontWeight:'bold'}}>19개의 레시피 보기</Text>
+                  </ImageBackground>
+                  </View>
+
+
+                  <View style={{flex:1,backgroundColor:'blue', marginTop:15}}>
+                  <Text style={{fontSize: 24, fontWeight:'700', paddingHorizontal: 20}}>달콤한 브런치의 유횩</Text>
+                  <View style={{height: 130, marginTop: 10, backgroundColor:'red'}}>
+                  <ScrollView horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  <Category imageUri={require('./assets/icecream.jpg')}
+                  name='아이스크림'
+                  height={150}
+                  width={100}/>
+
+                  <Category imageUri={require('./assets/cokkie.jpg')}
+                  name='쿠키'
+                  height={150}
+                  width={100}/>
+
+                  <Category imageUri={require('./assets/panCake.jpg')}
+                  name='팬케익'
+                  height={150}
+                  width={100}/>
+
+                  <Category imageUri={require('./assets/salad.jpg')}
+                  name='샐러'
+                  height={150}
+                  width={100}/>
+                  </ScrollView>
+                  </View>
+                  </View>
+
+                  <View style={{flex:1,backgroundColor:'black',paddingTop:40, paddingLeft:20, paddingRight:20}}>
+                  <Text style={{color:'white', fontSize: 24, fontWeight:'700',paddingBottom:10}}>BEST 오디오레시피</Text>
+                  <ImageBackground
+                  style={{ justifyContent:'flex-end', alignItems:'flex-start',flex:1, height:180, width:325, resizeMode:'cover', borderRadius:5, borderWidth:1,borderColor:'#dddddd'}} source={require('./assets/abo.jpeg')}>
+                  <Text style={{fontSize:18,paddingLeft:10,color:'white', fontWeight:'bold'}}>까도 까도 매력적인 녀석</Text>
+                  <Text style={{paddingLeft:10,fontSize:14,color:'white', fontWeight:'bold'}}>아보카도 토스트</Text>
+                  </ImageBackground>
+                  <ImageBackground
+                  style={{ justifyContent:'flex-end', alignItems:'flex-start',flex:1, height:180, width:325, marginTop:15,resizeMode:'cover', borderRadius:5, borderWidth:1,borderColor:'#dddddd'}} source={require('./assets/brocoli.jpg')}>
+                  <Text style={{fontSize:18,paddingLeft:10,color:'white', fontWeight:'bold'}}>헤이 브로~! 건강 챙겨야지</Text>
+                  <Text style={{paddingLeft:10,fontSize:14,color:'white', fontWeight:'bold'}}>브로콜리 크림스프</Text>
+                  </ImageBackground>
+                  <ImageBackground
+                  style={{ justifyContent:'flex-end', alignItems:'flex-start',flex:1, height:180, width:325,marginTop:15, resizeMode:'cover', borderRadius:5, borderWidth:1,borderColor:'#dddddd'}} source={require('./assets/tomatoPasta.jpg')}>
+                  <Text style={{fontSize:18,paddingLeft:10,color:'white', fontWeight:'bold'}}>상큼한 맛에 내가 미트요</Text>
+                  <Text style={{paddingLeft:10,fontSize:14,color:'white', fontWeight:'bold'}}>미트 토마토 파스ab</Text>
+                  </ImageBackground>
+                  </View>
+
+
+                  <View style={{height:1000}}>
+                  </View>
+                  </ScrollView>
+
+                  </View>
+                  </SafeAreaView>
+
+                  );
+                }
+              }
+
+              const styles = StyleSheet.create({
+                container: {
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#F5FCFF',
+                  },
+                  welcome: {
+                    fontSize: 20,
+                    textAlign: 'center',
+                    margin: 10,
+                    },
+
+                    });
