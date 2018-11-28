@@ -3,99 +3,64 @@ import React, {Component} from 'react';
 import { StyleSheet, Text, View, ScrollView, Animated, Image, ImageBackground, Dimensions, SafeAreaView} from 'react-native';
 import { Header, Left, Right,Body} from 'native-base'
 import Category from './components/Category'
-const {height, width} = Dimensions.get('window')
 
-HEADER_MAX_HEIGHT = 120
-HEADER_MIN_HEIGHT = 80
-PROFILE_IMAGE_MAX_HEIGHT = 80
-PROFILE_IMAGE_MIN_HEIGHT = 0
 
 export default class App extends Component<Props> {
-  constructor(props){
-    super(props)
-    this.state = {
-      scrollY: new Animated.Value(0)
-    }
+
+  componentWillMount(){
+    this.scrollY = new Animated.Value(0)
+    this.startHeaderHeight = 40
+    this.endHeaderHeight = 0
+
+    this.animatedHeaderHeight = this.scrollY.interpolate({
+      inputRange:[0,50],
+      outputRange:[this.startHeaderHeight, this.endHeaderHeight],
+      extrapolate:'clamp'
+      })
   }
 
   render() {
-    const headerHeight = this.state.scrollY.interpolate({
-      inputRange: [0,HEADER_MAX_HEIGHT-HEADER_MIN_HEIGHT],
-      outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-      extrapolate:'clamp'
-      })
-
-      const mainBarHeight = this.state.scrollY.interpolate({
-        inputRange: [0,HEADER_MAX_HEIGHT-HEADER_MIN_HEIGHT],
-        outputRange: [PROFILE_IMAGE_MAX_HEIGHT, PROFILE_IMAGE_MIN_HEIGHT],
-        extrapolate:'clamp'
-        })
-
-        const mainBarMarginTop = this.state.scrollY.interpolate({
-          inputRange: [0,HEADER_MAX_HEIGHT-HEADER_MIN_HEIGHT],
-          outputRange: [HEADER_MAX_HEIGHT-(PROFILE_IMAGE_MAX_HEIGHT), HEADER_MAX_HEIGHT],
-          extrapolate:'clamp'
-          })
 
           return (
           <SafeAreaView style={{flex:1}}>
             <View style={{flex:1}}>
-            <Animated.View style={{
-              position:'absolute',
-              top:0,
-              left:0,
-              right:0,
-              backgroundColor: 'gray',
-              height: headerHeight,
-              }}>
 
-              </Animated.View>
+          <Animated.View style={{ backgroundColor:'yellow',height:this.animatedHeaderHeight}}>
+            <Animated.View style={{flexDirection:'row', marginHorizontal:20, position:'relative', top: 10, backgroundColor:'blue'}}>
+            <View style={{minHeight:20, minWidth:40, padding:5, backgroundColor: 'white', borderColor: '#dddddd', borderWidth:1, borderRadius:2}}>
+            <Text style={{fontWeight:'700', fontSize:10}}>오디오레시피</Text>
+            </View>
+
+            <View style={{minHeight:20, minWidth:40, padding:5, backgroundColor: 'white', borderColor: '#dddddd', borderWidth:1, borderRadius:2}}>
+            <Text style={{fontWeight:'700', fontSize:10}}>오디오레시피</Text>
+            </View>
+            </Animated.View>
+          </Animated.View>
+
+            <View style={{padding:10,height:40,backgroundColor:'gray',borderColor: 'transparent',justifyContent:'center',opacity:1,
+            alignItems:'center',
+            flexDirection:'row',justifyContent:'space-between'}}>
+            <Text style={{color:'white'}}>홈</Text>
+            <Text style={{color:'white'}}>종류별</Text>
+            <Text style={{color:'white'}}>상황별</Text>
+            <Text style={{color:'white'}}>조리별</Text>
+            </View>
+
+
+
 
               <ScrollView style={{flex:1}}
               scrollEventThrottle={16}
               onScroll={Animated.event(
-                [{nativeEvent:{contentOffset: {y: this.state.scrollY}}}]
+                [
+                {nativeEvent:{contentOffset:{y:this.scrollY}}}
+                ]
                 )}>
 
                 <ImageBackground
                 style={{width:375, height:400}}
                 source={require('./assets/food.jpg')}>
-
-
-                <Animated.View style={{height:mainBarHeight,
-                  overflow: 'hidden',
-                  backgroundColor:'gray',
-                  marginTop: mainBarMarginTop,
-                  justifyContent:'center',
-                  alignItems:'center',
-                  flexDirection:'row',
-                  opacity:0.6
-                  }}>
-
-                  <Left>
-                  <Image source={require('./assets/drawable-hdpi/ic_menu.png')}></Image>
-                  </Left>
-
-                  <Image source={require('./assets/drawable-hdpi/assets_title_symbol_white.png')}></Image>
-                  <Body>
-                  <Image source={require('./assets/drawable-hdpi/ic_favorites.png')}></Image>
-                  </Body>
-
-                  <Right>
-                  <Image source={require('./assets/drawable-hdpi/ic_search.png')}></Image>
-                  </Right>
-                  </Animated.View>
-
-
-                  <View style={{padding:10,height:40,backgroundColor:'gray',borderColor: 'transparent',justifyContent:'center',opacity:0.6,
-                  alignItems:'center',
-                  flexDirection:'row',justifyContent:'space-between'}}>
-                  <Text style={{color:'white'}}>홈</Text>
-                  <Text style={{color:'white'}}>종류별</Text>
-                  <Text style={{color:'white'}}>상황별</Text>
-                  <Text style={{color:'white'}}>조리별</Text>
-                  </View>
-                  </ImageBackground>
+                </ImageBackground>
 
 
 
