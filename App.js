@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react';
 import { StyleSheet, Text,
   View, ScrollView,
@@ -14,77 +13,30 @@ import Second from './screens/Second'
 import Third from './screens/Third'
 import Fourth from './screens/Fourth'
 
+
 export default class App extends Component {
+
+
   render(){
-    return(
-      <SafeAreaView style={{flex:1}}>
-        <AppTabNavi/>
-      </SafeAreaView>
-    )
-  }
+    console.log(this.scroll)
+  return(
+
+    <SafeAreaView style={{flex:1}}>
+
+    <AppContainer/>
+
+    </SafeAreaView>
+  )
+}
 }
 
- class HomeScreen extends Component{
-  componentWillMount(){
-   this.scrollY = new Animated.Value(0)
-   this.startHeaderHeight = 40
-   this.endHeaderHeight = 0
-
-   this.animatedHeaderHeight = this.scrollY.interpolate({
-     inputRange:[0,50],
-     outputRange:[this.startHeaderHeight, this.endHeaderHeight],
-     extrapolate:'clamp'
-     })
- }
-
+class Home extends Component{
 
   render() {
 
           return (
           <SafeAreaView style={{flex:1}}>
             <View style={{flex:1}}>
-
-            <Animated.View style={{ backgroundColor:'gray',height:this.animatedHeaderHeight}}>
-              <Animated.View style={{paddingLeft:10,paddingRight:10,flexDirection:'row', marginHorizontal:0, position:'relative'}}>
-
-
-                   <Left>
-                   <Image
-                          style={{height:20,width:20}}
-                          source={require('./assets/drawable-hdpi/ic_menu.png')}></Image>
-                   </Left>
-
-
-                    <Image
-                          style={{height:30,width:140}}
-                          source={require('./assets/drawable-hdpi/assets_title_symbol_white.png')}></Image>
-                   <Body>
-                   <Image
-                          style={{height:20,width:20}}
-                          source={require('./assets/drawable-hdpi/ic_favorites.png')}></Image>
-                   </Body>
-                    <Right>
-                   <Image
-                          style={{height:20,width:20}}
-                          source={require('./assets/drawable-hdpi/ic_search.png')}></Image>
-                   </Right>
-
-
-              </Animated.View>
-            </Animated.View>
-
-            <View style={{padding:5,height:40,backgroundColor:'gray',borderColor: 'transparent',justifyContent:'center',opacity:1,
-            alignItems:'center',
-            flexDirection:'row',justifyContent:'space-between'}}>
-            <TouchableOpacity
-                              onPress={() => this.props.navigation.navigate('Second')}>
-            <Text style={{color:'white'}}>홈</Text>
-            </TouchableOpacity>
-
-            <Text style={{color:'white'}}>종류별</Text>
-            <Text style={{color:'white'}}>상황별</Text>
-            <Text style={{color:'white'}}>조리별</Text>
-            </View>
               <ScrollView style={{flex:1}}
               scrollEventThrottle={16}
               onScroll={Animated.event(
@@ -233,47 +185,31 @@ class SettingsScreen extends Component {
 }
 
 
-
-const AppTabNavigator = createStackNavigator({
-  Home:{
-  screen:HomeScreen,
-  navigationOptions: {
-      header: null,
-      tabBarVisible:true,
-      activeTintColor: '#e91e63',
-    }
-  },
-  Second:{
-  screen: Second,
-  navigationOptions: {
-      header: null,
-      tabBarVisible:true,
-      }
-    },
-    Third:{
-    screen: Third,
-    navigationOptions: {
-        header: null,
-        tabBarVisible:true,
-        }
-      },
-    Fourth:{
-    screen: Fourth,
-    navigationOptions: {
-        header: null,
-        tabBarVisible:true,
-        }
-      }
-    }, {
-    tabBarOptions: {
+const tabBarHeight = 125;
+const AppTabNavigator = createMaterialTopTabNavigator({
+  홈: { screen: Home },
+  종류별: { screen: Second },
+  상황별: { screen: Third },
+  조리별: { screen: Fourth },
+}, {
+  tabBarOptions: {
+   showLabel: true,
     style: {
-
+        backgroundColor: 'gray',
+        opacity:0.5,
+        position: 'absolute',
+        bottom:  Dimensions.get('window').height-tabBarHeight,
+        left:0,
+        right:0
+    },
+    labelStyle:{
+      fontSize:15,
+      color:"black"
     }
-  }
-}
-  )
+  }});
 
-const AppTabNavi = createAppContainer(AppTabNavigator)
+
+const AppContainer = createAppContainer(AppTabNavigator)
 
               const styles = StyleSheet.create({
                 container: {
