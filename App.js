@@ -23,6 +23,35 @@ export default class App extends Component {
 
     <SafeAreaView style={{flex:1}}>
 
+
+    <Animated.View style={{ backgroundColor:'gray',height:this.animatedHeaderHeight}}>
+      <Animated.View style={{paddingLeft:10,paddingRight:10,flexDirection:'row', marginHorizontal:0, position:'relative'}}>
+
+
+           <Left>
+           <Image
+                  style={{height:20,width:20}}
+                  source={require('./assets/drawable-hdpi/ic_menu.png')}></Image>
+           </Left>
+
+
+            <Image
+                  style={{height:30,width:140}}
+                  source={require('./assets/drawable-hdpi/assets_title_symbol_white.png')}></Image>
+           <Body>
+           <Image
+                  style={{height:20,width:20}}
+                  source={require('./assets/drawable-hdpi/ic_favorites.png')}></Image>
+           </Body>
+            <Right>
+           <Image
+                  style={{height:20,width:20}}
+                  source={require('./assets/drawable-hdpi/ic_search.png')}></Image>
+           </Right>
+
+
+      </Animated.View>
+    </Animated.View>
     <AppContainer/>
 
     </SafeAreaView>
@@ -30,7 +59,7 @@ export default class App extends Component {
 }
 }
 
-class Home extends Component{
+class HomeScreen extends Component{
 
   render() {
 
@@ -185,29 +214,55 @@ class SettingsScreen extends Component {
 }
 
 
-const tabBarHeight = 125;
+const tabBarHeight = 150
 const AppTabNavigator = createMaterialTopTabNavigator({
-  홈: { screen: Home },
-  종류별: { screen: Second },
-  상황별: { screen: Third },
-  조리별: { screen: Fourth },
-}, {
-  tabBarOptions: {
-   showLabel: true,
-    style: {
-        backgroundColor: 'gray',
-        opacity:0.5,
-        position: 'absolute',
-        bottom:  Dimensions.get('window').height-tabBarHeight,
-        left:0,
-        right:0
-    },
-    labelStyle:{
-      fontSize:15,
-      color:"black"
-    }
-  }});
 
+  Home:{
+  screen:HomeScreen,
+  navigationOptions: {
+      header: null,
+      tabBarVisible:true,
+      activeTintColor: '#e91e63',
+    }
+  },
+  Second:{
+  screen: Second,
+  navigationOptions: {
+      header: null,
+      tabBarVisible:true,
+      }
+    },
+    Third:{
+    screen: Third,
+    navigationOptions: {
+        header: null,
+        tabBarVisible:true,
+        }
+      },
+    Fourth:{
+    screen: Fourth,
+    navigationOptions: {
+        header: null,
+        tabBarVisible:true,
+        }
+      }
+    }, {
+      tabBarOptions: {
+     showLabel: true,
+      style: {
+          backgroundColor: 'rgba(22, 22, 22, 0)',
+          position: 'absolute',
+          bottom:  Dimensions.get('window').height-tabBarHeight,
+          left:0,
+          right:0
+      },
+      labelStyle:{
+        fontSize:15,
+        color:"white"
+      }
+    }
+   }
+  )
 
 const AppContainer = createAppContainer(AppTabNavigator)
 
