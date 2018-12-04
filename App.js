@@ -51,14 +51,37 @@ export default class App extends Component {
 
 
   return(
-<SafeAreaView style={{flex:1}}>
-<Animated.View style = {[ styles.HeaderStyle, { height: AnimateHeaderHeight, backgroundColor: AnimateHeaderBackgroundColor } ]}>
+
+
+    <SafeAreaView style={{flex:1 }}>
+
+
+    <ScrollView
+                      scrollEventThrottle = { 16 }
+
+                      contentContainerStyle = {{ paddingTop: Header_Maximum_Height }}
+
+                      onScroll = { Animated.event(
+                        [{ nativeEvent: { contentOffset: { y: this.AnimatedHeaderValue }}}]
+                  )}>
+
+
+                    <AppContainer/>
+
+    </ScrollView>
+
+
+    <Animated.View style = {[ styles.HeaderStyle, { height: AnimateHeaderHeight, backgroundColor: AnimateHeaderBackgroundColor } ]}>
 
                   <Text style={styles.HeaderInsideTextStyle}> Collapsible Expandable Header </Text>
 
     </Animated.View>
-    <AppContainer/>
-</SafeAreaView>
+
+
+
+
+
+    </SafeAreaView>
   )
 }
 }
@@ -95,7 +118,7 @@ class HomeScreen extends Component{
 
           return (
           <SafeAreaView style={{flex:1}}>
-            <View style={{marginTop:200}}>
+            <View style={{flex:1}}>
             <ScrollView
                               scrollEventThrottle = { 16 }
                               onScroll = { Animated.event(
