@@ -13,50 +13,17 @@ import Second from './screens/Second'
 import Third from './screens/Third'
 import Fourth from './screens/Fourth'
 
-const Header_Maximum_Height = 100;
-
+const Header_Maximum_Height = 40;
 const Header_Minimum_Height = 0;
-
+const Header_Maximum_Height2 = 200;
+const Header_Minimum_Height2 = 100;
 
 export default class App extends Component {
 
-    constructor()
-    {
-        super();
-
-        this.AnimatedHeaderValue = new Animated.Value(0);
-
-    }
-
-
   render(){
-
-    const AnimateHeaderBackgroundColor = this.AnimatedHeaderValue.interpolate(
-          {
-              inputRange: [ 0, ( Header_Maximum_Height - Header_Minimum_Height )  ],
-
-              outputRange: [ '#009688', '#00BCD4' ],
-
-              extrapolate: 'clamp'
-          });
-
-    const AnimateHeaderHeight = this.AnimatedHeaderValue.interpolate(
-          {
-              inputRange: [ 0, ( Header_Maximum_Height - Header_Minimum_Height ) ],
-
-              outputRange: [ Header_Maximum_Height, Header_Minimum_Height ],
-
-              extrapolate: 'clamp'
-          });
-
-
   return(
-
 <View style={{flex:1, marginTop:30}}>
-
-
     <AppContainer/>
-
 </View>
   )
 }
@@ -66,45 +33,61 @@ class HomeScreen extends Component{
   constructor()
   {
       super();
-
       this.AnimatedHeaderValue = new Animated.Value(0);
-
   }
-
-
   render() {
     const AnimateHeaderBackgroundColor = this.AnimatedHeaderValue.interpolate(
           {
               inputRange: [ 0, ( Header_Maximum_Height - Header_Minimum_Height )  ],
-
               outputRange: [ '#009688', '#00BCD4' ],
-
               extrapolate: 'clamp'
           });
 
     const AnimateHeaderHeight = this.AnimatedHeaderValue.interpolate(
           {
               inputRange: [ 0, ( Header_Maximum_Height - Header_Minimum_Height ) ],
-
               outputRange: [ Header_Maximum_Height, Header_Minimum_Height ],
-
               extrapolate: 'clamp'
           });
 
+    const AnimateHeaderHeight2 = this.AnimatedHeaderValue.interpolate(
+                {
+                    inputRange: [ 0, ( Header_Maximum_Height2 - Header_Minimum_Height2 ) ],
+                    outputRange: [ Header_Maximum_Height2, Header_Minimum_Height2 ],
+                    extrapolate: 'clamp'
+                });
 
           return (
           <SafeAreaView style={{flex:1}}>
 
-          <Animated.View style={{height:AnimateHeaderHeight,width:'100%', backgroundColor:'blue'}}>
+          <Animated.View style={{ backgroundColor:'gray',height:AnimateHeaderHeight}}>
+              <Animated.View style={{paddingLeft:10,paddingRight:10,flexDirection:'row', marginHorizontal:0, position:'relative'}}>
+                    <Left>
+                   <Image
+                          style={{height:20,width:20}}
+                          source={require('./assets/drawable-hdpi/ic_menu.png')}></Image>
+                   </Left>
+                     <Image
+                          style={{height:30,width:140}}
+                          source={require('./assets/drawable-hdpi/assets_title_symbol_white.png')}></Image>
+                   <Body>
+                   <Image
+                          style={{height:20,width:20}}
+                          source={require('./assets/drawable-hdpi/ic_favorites.png')}></Image>
+                   </Body>
+                    <Right>
+                   <Image
+                          style={{height:20,width:20}}
+                          source={require('./assets/drawable-hdpi/ic_search.png')}></Image>
+                   </Right>
+               </Animated.View>
+            </Animated.View>
 
-          </Animated.View>
             <Animated.ScrollView
                               scrollEventThrottle = { 16 }
                               onScroll = { Animated.event(
                                 [{ nativeEvent: { contentOffset: { y: this.AnimatedHeaderValue }}}]
                           )}>
-
-
 
                 <ImageBackground
                 style={{width:375, height:400}}
@@ -245,6 +228,7 @@ class SettingsScreen extends Component {
 
 
 const tabBarHeight = 100
+
 const AppTabNavigator = createMaterialTopTabNavigator({
 
   Home:{
@@ -284,11 +268,12 @@ const AppTabNavigator = createMaterialTopTabNavigator({
           position: 'absolute',
           Top:  Dimensions.get('window').height-tabBarHeight,
           left:0,
-          right:0
+          right:0,
+          marginTop:this.AnimateHeaderHeight2
       },
       labelStyle:{
         fontSize:15,
-        color:"red"
+        color:"white"
       }
     }
    }
