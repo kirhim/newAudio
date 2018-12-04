@@ -3,7 +3,7 @@ import { StyleSheet, Text,
   View, ScrollView,
   Animated, Image,
   ImageBackground, Dimensions,
-  SafeAreaView, Button, TouchableOpacity} from 'react-native';
+  SafeAreaView, Button, TouchableOpacity, Platform} from 'react-native';
 import { Container, Content, Header, Left, Right,Body} from 'native-base'
 import Swiper from 'react-native-swiper'
 import Category from './components/Category'
@@ -13,66 +13,94 @@ import Second from './screens/Second'
 import Third from './screens/Third'
 import Fourth from './screens/Fourth'
 
+const Header_Maximum_Height = 200;
+
+const Header_Minimum_Height = 0;
+
 
 export default class App extends Component {
 
+    constructor()
+    {
+        super();
+
+        this.AnimatedHeaderValue = new Animated.Value(0);
+
+    }
+
 
   render(){
-    console.log(this.scroll)
+
+    const AnimateHeaderBackgroundColor = this.AnimatedHeaderValue.interpolate(
+          {
+              inputRange: [ 0, ( Header_Maximum_Height - Header_Minimum_Height )  ],
+
+              outputRange: [ '#009688', '#00BCD4' ],
+
+              extrapolate: 'clamp'
+          });
+
+    const AnimateHeaderHeight = this.AnimatedHeaderValue.interpolate(
+          {
+              inputRange: [ 0, ( Header_Maximum_Height - Header_Minimum_Height ) ],
+
+              outputRange: [ Header_Maximum_Height, Header_Minimum_Height ],
+
+              extrapolate: 'clamp'
+          });
+
+
   return(
+<SafeAreaView style={{flex:1}}>
+<Animated.View style = {[ styles.HeaderStyle, { height: AnimateHeaderHeight, backgroundColor: AnimateHeaderBackgroundColor } ]}>
 
-    <SafeAreaView style={{flex:1}}>
+                  <Text style={styles.HeaderInsideTextStyle}> Collapsible Expandable Header </Text>
 
-
-    <Animated.View style={{ backgroundColor:'gray',height:this.animatedHeaderHeight}}>
-      <Animated.View style={{paddingLeft:10,paddingRight:10,flexDirection:'row', marginHorizontal:0, position:'relative'}}>
-
-
-           <Left>
-           <Image
-                  style={{height:20,width:20}}
-                  source={require('./assets/drawable-hdpi/ic_menu.png')}></Image>
-           </Left>
-
-
-            <Image
-                  style={{height:30,width:140}}
-                  source={require('./assets/drawable-hdpi/assets_title_symbol_white.png')}></Image>
-           <Body>
-           <Image
-                  style={{height:20,width:20}}
-                  source={require('./assets/drawable-hdpi/ic_favorites.png')}></Image>
-           </Body>
-            <Right>
-           <Image
-                  style={{height:20,width:20}}
-                  source={require('./assets/drawable-hdpi/ic_search.png')}></Image>
-           </Right>
-
-
-      </Animated.View>
     </Animated.View>
     <AppContainer/>
-
-    </SafeAreaView>
+</SafeAreaView>
   )
 }
 }
 
 class HomeScreen extends Component{
+  constructor()
+  {
+      super();
+
+      this.AnimatedHeaderValue = new Animated.Value(0);
+
+  }
+
 
   render() {
+    const AnimateHeaderBackgroundColor = this.AnimatedHeaderValue.interpolate(
+          {
+              inputRange: [ 0, ( Header_Maximum_Height - Header_Minimum_Height )  ],
+
+              outputRange: [ '#009688', '#00BCD4' ],
+
+              extrapolate: 'clamp'
+          });
+
+    const AnimateHeaderHeight = this.AnimatedHeaderValue.interpolate(
+          {
+              inputRange: [ 0, ( Header_Maximum_Height - Header_Minimum_Height ) ],
+
+              outputRange: [ Header_Maximum_Height, Header_Minimum_Height ],
+
+              extrapolate: 'clamp'
+          });
+
 
           return (
           <SafeAreaView style={{flex:1}}>
-            <View style={{flex:1}}>
-              <ScrollView style={{flex:1}}
-              scrollEventThrottle={16}
-              onScroll={Animated.event(
-                [
-                {nativeEvent:{contentOffset:{y:this.scrollY}}}
-                ]
-                )}>
+            <View style={{marginTop:200}}>
+            <ScrollView
+                              scrollEventThrottle = { 16 }
+                              onScroll = { Animated.event(
+                                [{ nativeEvent: { contentOffset: { y: this.AnimatedHeaderValue }}}]
+                          )}>
 
                 <ImageBackground
                 style={{width:375, height:400}}
@@ -192,8 +220,7 @@ class HomeScreen extends Component{
                   </View>
 
 
-                  <View style={{height:1000}}>
-                  </View>
+
                   </ScrollView>
 
                   </View>
@@ -214,7 +241,7 @@ class SettingsScreen extends Component {
 }
 
 
-const tabBarHeight = 150
+const tabBarHeight = 100
 const AppTabNavigator = createMaterialTopTabNavigator({
 
   Home:{
@@ -247,12 +274,12 @@ const AppTabNavigator = createMaterialTopTabNavigator({
         }
       }
     }, {
-      tabBarOptions: {
+    tabBarOptions: {
      showLabel: true,
       style: {
           backgroundColor: 'rgba(22, 22, 22, 0)',
           position: 'absolute',
-          bottom:  Dimensions.get('window').height-tabBarHeight,
+          Top:  Dimensions.get('window').height-tabBarHeight,
           left:0,
           right:0
       },
@@ -264,6 +291,7 @@ const AppTabNavigator = createMaterialTopTabNavigator({
    }
   )
 
+
 const AppContainer = createAppContainer(AppTabNavigator)
 
               const styles = StyleSheet.create({
@@ -273,10 +301,32 @@ const AppContainer = createAppContainer(AppTabNavigator)
                   alignItems: 'center',
                   backgroundColor: '#F5FCFF',
                   },
-                  welcome: {
-                    fontSize: 20,
-                    textAlign: 'center',
-                    margin: 10,
+
+                    HeaderStyle:
+                    {
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: (Platform.OS == 'ios') ? 45 : 0,
                     },
+
+                    HeaderInsideTextStyle:
+                    {
+                        color: "#fff",
+                        fontSize: 18,
+                        textAlign: 'center'
+                    },
+
+                    TextViewStyle:
+                    {
+                        textAlign: 'center',
+                        color: "#000",
+                        fontSize: 18,
+                        margin: 5,
+                        padding: 7,
+                        backgroundColor: "#ECEFF1"
+                    }
 
                     });
