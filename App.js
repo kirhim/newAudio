@@ -13,7 +13,7 @@ import Second from './screens/Second'
 import Third from './screens/Third'
 import Fourth from './screens/Fourth'
 
-const Header_Maximum_Height = 200;
+const Header_Maximum_Height = 100;
 
 const Header_Minimum_Height = 0;
 
@@ -52,36 +52,12 @@ export default class App extends Component {
 
   return(
 
-
-    <SafeAreaView style={{flex:1 }}>
-
-
-    <ScrollView
-                      scrollEventThrottle = { 16 }
-
-                      contentContainerStyle = {{ paddingTop: Header_Maximum_Height }}
-
-                      onScroll = { Animated.event(
-                        [{ nativeEvent: { contentOffset: { y: this.AnimatedHeaderValue }}}]
-                  )}>
+<View style={{flex:1, marginTop:30}}>
 
 
-                    <AppContainer/>
+    <AppContainer/>
 
-    </ScrollView>
-
-
-    <Animated.View style = {[ styles.HeaderStyle, { height: AnimateHeaderHeight, backgroundColor: AnimateHeaderBackgroundColor } ]}>
-
-                  <Text style={styles.HeaderInsideTextStyle}> Collapsible Expandable Header </Text>
-
-    </Animated.View>
-
-
-
-
-
-    </SafeAreaView>
+</View>
   )
 }
 }
@@ -118,12 +94,17 @@ class HomeScreen extends Component{
 
           return (
           <SafeAreaView style={{flex:1}}>
-            <View style={{flex:1}}>
-            <ScrollView
+
+          <Animated.View style={{height:AnimateHeaderHeight,width:'100%', backgroundColor:'blue'}}>
+
+          </Animated.View>
+            <Animated.ScrollView
                               scrollEventThrottle = { 16 }
                               onScroll = { Animated.event(
                                 [{ nativeEvent: { contentOffset: { y: this.AnimatedHeaderValue }}}]
                           )}>
+
+
 
                 <ImageBackground
                 style={{width:375, height:400}}
@@ -244,9 +225,8 @@ class HomeScreen extends Component{
 
 
 
-                  </ScrollView>
+                  </Animated.ScrollView>
 
-                  </View>
                   </SafeAreaView>
 
                   );
@@ -308,7 +288,7 @@ const AppTabNavigator = createMaterialTopTabNavigator({
       },
       labelStyle:{
         fontSize:15,
-        color:"white"
+        color:"red"
       }
     }
    }
@@ -326,7 +306,7 @@ const AppContainer = createAppContainer(AppTabNavigator)
                   },
 
                     HeaderStyle:
-                    {
+                    {   flex:1,
                         justifyContent: 'center',
                         alignItems: 'center',
                         position: 'absolute',
